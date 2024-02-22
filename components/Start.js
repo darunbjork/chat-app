@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,23 +6,68 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  Alert,
 } from "react-native";
+import { getAuth, signInAnonymously } from "firebase/auth";
+
 const imgBackground = require("../assets/Background Image.png");
+
 const Start = ({ navigation }) => {
-  const [background, setBackground] = useState();
-  const [username, setUsername] = useState();
+  // State for background color and username
+  const [background, setBackground] = useState("#090C08");
+  const [username, setUsername] = useState("");
+
+  // Firebase authentication
+  const auth = getAuth();
+
+  // Function to determine text color based on background color luminance
+  const getTextColor = (color) => {
+    const hexColor = color.replace(/^#/, '');
+    const r = parseInt(hexColor.substr(0, 2), 16);
+    const g = parseInt(hexColor.substr(2, 2), 16);
+    const b = parseInt(hexColor.substr(4, 2), 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    // If the background is light, return black; otherwise, return white
+    return luminance > 0.5 ? "black" : "white";
+  };
+
+  // Function to sign in the user anonymously
+  const signInUser = () => {
+    signInAnonymously(auth)
+      .then((result) => {
+        // Navigate to the Chat screen with user details
+        navigation.navigate("Chat", {
+          name: username,
+          color: background,
+          id: result.user.uid,
+        });
+        Alert.alert("Signed in successfully");
+      })
+      .catch((error) => {
+        Alert.alert("Unable to sign in, please try again later");
+      });
+  };
+
   return (
     <ImageBackground source={imgBackground} style={styles.image}>
       <View style={styles.container}>
+        {/* App Title */}
         <Text style={styles.title}>Chatroom App</Text>
+
         <View style={styles.inputContainer}>
+          {/* Username Input */}
           <TextInput
             placeholder="Your Name"
             value={username}
             onChangeText={setUsername}
             style={styles.textInput}
           />
+
+          {/* Choose Background Color Text */}
           <Text style={styles.chooseBgText}>Choose Background Color</Text>
+
+          {/* Color Buttons */}
           <View style={styles.colorButtonContainer}>
             <TouchableOpacity
               style={[styles.colorButton, styles.colorInput1]}
@@ -50,16 +94,12 @@ const Start = ({ navigation }) => {
               }}
             ></TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.startButton}
-            onPress={() => {
-              navigation.navigate("Chat", {
-                name: username,
-                color: background,
-              });
-            }}
-          >
-            <Text style={styles.startButtonText}>Start Chatting</Text>
+
+          {/* Start Chatting Button */}
+          <TouchableOpacity style={styles.startButton} onPress={signInUser}>
+            <Text style={[styles.startButtonText, { color: getTextColor(background) }]}>
+              Start Chatting
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -89,28 +129,25 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     padding: 20,
     borderRadius: 15,
-    width: "88%",
-    height: '44%',  // Add height property
+    width: "95%", // Adjust the width percentage as needed
+    height: "44%",
     alignItems: "center",
     marginBottom: 20,
   },
-
   textInput: {
     width: "100%",
-    paddingVertical: 15,  // Adjust vertical padding
-    paddingHorizontal: 20,  // Adjust horizontal padding
+    paddingVertical: 15,
+    paddingHorizontal: 50,
     borderWidth: 1,
     borderRadius: 10,
     marginTop: 15,
     marginBottom: 15,
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "300",
     color: "#757083",
     opacity: 0.8,
     minHeight: 40,
   },
-
-
   chooseBgText: {
     fontSize: 16,
     fontWeight: "300",
@@ -155,4 +192,5 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
+
 export default Start;
