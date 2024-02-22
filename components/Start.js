@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   StyleSheet,
@@ -7,18 +8,14 @@ import {
   View,
   ImageBackground,
 } from "react-native";
-
 const imgBackground = require("../assets/Background Image.png");
-
 const Start = ({ navigation }) => {
   const [background, setBackground] = useState();
   const [username, setUsername] = useState();
-
   return (
     <ImageBackground source={imgBackground} style={styles.image}>
       <View style={styles.container}>
         <Text style={styles.title}>Chatroom App</Text>
-
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Your Name"
@@ -26,9 +23,7 @@ const Start = ({ navigation }) => {
             onChangeText={setUsername}
             style={styles.textInput}
           />
-
           <Text style={styles.chooseBgText}>Choose Background Color</Text>
-
           <View style={styles.colorButtonContainer}>
             <TouchableOpacity
               style={[styles.colorButton, styles.colorInput1]}
@@ -36,21 +31,18 @@ const Start = ({ navigation }) => {
                 setBackground("#090C08");
               }}
             ></TouchableOpacity>
-
             <TouchableOpacity
               style={[styles.colorButton, styles.colorInput2]}
               onPress={() => {
                 setBackground("#474056");
               }}
             ></TouchableOpacity>
-
             <TouchableOpacity
               style={[styles.colorButton, styles.colorInput3]}
               onPress={() => {
                 setBackground("#8A95A5");
               }}
             ></TouchableOpacity>
-
             <TouchableOpacity
               style={[styles.colorButton, styles.colorInput4]}
               onPress={() => {
@@ -58,7 +50,6 @@ const Start = ({ navigation }) => {
               }}
             ></TouchableOpacity>
           </View>
-
           <TouchableOpacity
             style={styles.startButton}
             onPress={() => {
@@ -106,16 +97,20 @@ const styles = StyleSheet.create({
 
   textInput: {
     width: "100%",
-    padding: 15,
+    paddingVertical: 15,  // Adjust vertical padding
+    paddingHorizontal: 20,  // Adjust horizontal padding
     borderWidth: 1,
     borderRadius: 10,
     marginTop: 15,
     marginBottom: 15,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "300",
     color: "#757083",
     opacity: 0.8,
+    minHeight: 40,
   },
+
+
   chooseBgText: {
     fontSize: 16,
     fontWeight: "300",
@@ -160,5 +155,4 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
-
 export default Start;
