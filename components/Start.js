@@ -10,14 +10,20 @@ import {
 } from "react-native";
 import { getAuth, signInAnonymously } from "firebase/auth";
 
+// Constants for Colors
+const COLORS = {
+  black: "#090C08",
+  darkGray: "#474056",
+  lightGray: "#8A95A5",
+  beige: "#B9C6AE",
+};
+
 const imgBackground = require("../assets/Background Image.png");
 
 const Start = ({ navigation }) => {
-  // State for background color and username
-  const [background, setBackground] = useState("#090C08");
+  const [background, setBackground] = useState(COLORS.black);
   const [username, setUsername] = useState("");
 
-  // Firebase authentication
   const auth = getAuth();
 
   // Function to determine text color based on background color luminance
@@ -29,7 +35,7 @@ const Start = ({ navigation }) => {
     const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 
     // If the background is light, return black; otherwise, return white
-    return luminance > 0.5 ? "black" : "white";
+    return luminance > 0.5 ? COLORS.black : COLORS.darkGray;
   };
 
   // Function to sign in the user anonymously
@@ -69,30 +75,13 @@ const Start = ({ navigation }) => {
 
           {/* Color Buttons */}
           <View style={styles.colorButtonContainer}>
-            <TouchableOpacity
-              style={[styles.colorButton, styles.colorInput1]}
-              onPress={() => {
-                setBackground("#090C08");
-              }}
-            ></TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.colorButton, styles.colorInput2]}
-              onPress={() => {
-                setBackground("#474056");
-              }}
-            ></TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.colorButton, styles.colorInput3]}
-              onPress={() => {
-                setBackground("#8A95A5");
-              }}
-            ></TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.colorButton, styles.colorInput4]}
-              onPress={() => {
-                setBackground("#B9C6AE");
-              }}
-            ></TouchableOpacity>
+            {Object.entries(COLORS).map(([key, color]) => (
+              <TouchableOpacity
+                key={color}
+                style={[styles.colorButton, { backgroundColor: color }]}
+                onPress={() => setBackground(color)}
+              />
+            ))}
           </View>
 
           {/* Start Chatting Button */}
@@ -107,6 +96,7 @@ const Start = ({ navigation }) => {
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
   image: {
     flex: 1,
@@ -122,7 +112,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 45,
     fontWeight: "600",
-    color: "white",
+    color: COLORS.darkGray,
     marginBottom: 20,
   },
   inputContainer: {
@@ -144,14 +134,14 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 22,
     fontWeight: "300",
-    color: "#757083",
+    color: COLORS.darkGray,
     opacity: 0.8,
     minHeight: 40,
   },
   chooseBgText: {
     fontSize: 16,
     fontWeight: "300",
-    color: "#757083",
+    color: COLORS.darkGray,
     marginVertical: 10,
     textAlign: "left",
   },
@@ -166,20 +156,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
   },
-  colorInput1: {
-    backgroundColor: "#090C08",
-  },
-  colorInput2: {
-    backgroundColor: "#474056",
-  },
-  colorInput3: {
-    backgroundColor: "#8A95A5",
-  },
-  colorInput4: {
-    backgroundColor: "#B9C6AE",
-  },
   startButton: {
-    backgroundColor: "#757083",
+    backgroundColor: COLORS.darkGray,
     width: "100%",
     alignItems: "center",
     padding: 20,
@@ -187,7 +165,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   startButtonText: {
-    color: "white",
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: "600",
   },
