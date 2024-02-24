@@ -1,13 +1,7 @@
+// Start.js
+
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  ImageBackground,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, ImageBackground, Alert } from "react-native";
 import { getAuth, signInAnonymously } from "firebase/auth";
 
 // Constants for Colors
@@ -21,9 +15,11 @@ const COLORS = {
 const imgBackground = require("../assets/Background Image.png");
 
 const Start = ({ navigation }) => {
+  // State for background color and username
   const [background, setBackground] = useState(COLORS.black);
   const [username, setUsername] = useState("");
 
+  // Firebase authentication instance
   const auth = getAuth();
 
   // Function to determine text color based on background color luminance
@@ -85,8 +81,8 @@ const Start = ({ navigation }) => {
           </View>
 
           {/* Start Chatting Button */}
-          <TouchableOpacity style={styles.startButton} onPress={signInUser}>
-            <Text style={[styles.startButtonText, { color: getTextColor(background) }]}>
+          <TouchableOpacity style={[styles.startButton, { backgroundColor: COLORS.lightGray }]} onPress={signInUser}>
+            <Text style={[styles.startButtonText, { color: COLORS.black }]}>
               Start Chatting
             </Text>
           </TouchableOpacity>
@@ -139,7 +135,7 @@ const styles = StyleSheet.create({
     minHeight: 40,
   },
   chooseBgText: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "300",
     color: COLORS.darkGray,
     marginVertical: 10,
@@ -157,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   startButton: {
-    backgroundColor: COLORS.darkGray,
+    backgroundColor: COLORS.lightGray,
     width: "100%",
     alignItems: "center",
     padding: 20,
@@ -165,8 +161,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   startButtonText: {
-    color: COLORS.white,
-    fontSize: 16,
+    color: COLORS.black,
+    fontSize: 18,
     fontWeight: "600",
   },
 });

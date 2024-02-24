@@ -1,3 +1,5 @@
+// App.js
+
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,7 +11,7 @@ import Chat from './components/Chat';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  // Your new web app's Firebase configuration
+  // Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAxORAtmc5NIqoQlpW4mdL8SKWTa2AS_FE",
     authDomain: "chatapp-217c0.firebaseapp.com",
@@ -18,7 +20,7 @@ const App = () => {
     messagingSenderId: "759429416236",
     appId: "1:759429416236:web:21e12c862b4e59ce215889"
   };
-
+  
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
