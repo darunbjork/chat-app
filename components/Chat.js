@@ -1,59 +1,53 @@
-// Chat.js
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Platform, KeyboardAvoidingView, TouchableOpacity, Text } from 'react-native';
+import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
+import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 
-const Chat = ({ route }) => {
-  const { name, color } = route.params;  // Destructure name and color passed from Start.js
+const Chat = ({ route, db }) => {
+  const { name, color } = route.params;
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "You have entered the chat",
-        createdAt: new Date(),
-        system: true,  // This will render it as a system message
-      },
-      {
-        _id: 2,
-        text: `Hello ${name}, welcome to the chat!`,
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      }
-    ]);
-  }, []);
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const messagesFirestore = querySnapshot.docs.map(doc => {
+        // Check if createdAt exists and is not null before converting
+        const createdAt = doc.data().createdAt ? new Date(doc.data().createdAt.toDate()) : new Date();
+        return {
+          _id: doc.id,
+          text: doc.data().text,
+          createdAt: createdAt,
+          user: doc.data().user,
+          system: doc.data().system || false
+        };
+      });
+      setMessages(messagesFirestore);
+    });
 
-  const onSend = useCallback((newMessages = []) => {
-    setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
-  }, []);
+    return () => unsubscribe();  // Cleanup on unmount
+  }, [db]);
+
+  const onSend = useCallback((messages = []) => {
+    messages.forEach(message => {
+      addDoc(collection(db, "messages"), {
+        text: message.text,
+        createdAt: serverTimestamp(), // Ensures the time is correct across different regions
+        user: message.user,
+        system: message.system || false
+      });
+    });
+  }, [db]);
 
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: color }} behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
       <GiftedChat
         messages={messages}
-        onSend={newMessages => onSend(newMessages)}
+        onSend={messages => onSend(messages)}
         user={{
-          _id: 1, // Assume your user's ID is 1
-          name: name, // Display the user's name in each message
+          _id: 1,  // Static user ID for the example
+          name: name
         }}
-        renderUsernameOnMessage={true} // Display the user's name above the message bubbles
-        placeholder="Type your message here..."
-        renderActions={() => (
-          <TouchableOpacity
-            accessible={true}
-            accessibilityLabel="More options"
-            accessibilityHint="Lets you choose to send an image or your geolocation."
-            onPress={() => {}}
-            style={{ padding: 10 }}
-          >
-            <Text style={{ color: '#000' }}>+</Text>
-          </TouchableOpacity>
-        )}
+        renderUsernameOnMessage={true}
       />
     </KeyboardAvoidingView>
   );

@@ -4,38 +4,22 @@ import { StyleSheet, View, Text, Button, TextInput, ImageBackground, KeyboardAvo
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
-  const [color, setColor] = useState('#FFF'); // Default color
+  const [color, setColor] = useState('#FFF');
 
-  const colors = ['#B9C6AE', '#8A95A5', '#474056', '#090C08']; // Example colors
+  const colors = ['#B9C6AE', '#8A95A5', '#474056', '#090C08'];
 
   return (
-    <ImageBackground 
-      source={require('../assets/Background Image.png')} 
-      style={styles.background}
-      resizeMode="cover"
-    >
+    <ImageBackground source={require('../assets/Background Image.png')} style={styles.background} resizeMode="cover">
       <KeyboardAvoidingView style={styles.keyboardView} behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.container}>
           <Text style={styles.title}>Hello! Enter your name and choose a color to start chatting.</Text>
-          <TextInput
-            style={styles.textInput}
-            value={name}
-            onChangeText={setName}
-            placeholder='Type your username here'
-          />
+          <TextInput style={styles.textInput} value={name} onChangeText={setName} placeholder='Type your username here' />
           <View style={styles.colorSelection}>
             {colors.map((itemColor) => (
-              <TouchableOpacity
-                key={itemColor}
-                style={[styles.colorButton, { backgroundColor: itemColor }]}
-                onPress={() => setColor(itemColor)}
-              />
+              <TouchableOpacity key={itemColor} style={[styles.colorButton, { backgroundColor: itemColor }]} onPress={() => setColor(itemColor)} />
             ))}
           </View>
-          <Button
-            title="Go to Chat"
-            onPress={() => navigation.navigate('Chat', { name, color })}
-          />
+          <Button title="Go to Chat" onPress={() => navigation.navigate('Chat', { name, color })} />
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>
@@ -51,7 +35,7 @@ const styles = StyleSheet.create({
   keyboardView: {
     width: '100%',
     flex: 1,
-    justifyContent: 'center', // Centers vertically
+    justifyContent: 'center',
   },
   container: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
