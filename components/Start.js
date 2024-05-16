@@ -1,11 +1,9 @@
-// Start.js
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Button, TextInput, ImageBackground, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
   const [color, setColor] = useState('#FFF');
-
   const colors = ['#B9C6AE', '#8A95A5', '#474056', '#090C08'];
 
   return (
