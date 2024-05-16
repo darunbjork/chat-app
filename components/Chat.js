@@ -8,6 +8,7 @@ const Chat = ({ route, db, isConnected }) => {
   const { name, color } = route.params;
   const [messages, setMessages] = useState([]);
 
+  // Cache messages locally
   const cacheMessages = async (messagesToCache) => {
     try {
       await AsyncStorage.setItem('messages', JSON.stringify(messagesToCache));
@@ -16,6 +17,7 @@ const Chat = ({ route, db, isConnected }) => {
     }
   };
 
+  // Load cached messages
   const loadCachedMessages = async () => {
     const cachedMessages = await AsyncStorage.getItem('messages');
     if (cachedMessages) {
