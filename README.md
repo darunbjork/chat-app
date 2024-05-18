@@ -1,6 +1,7 @@
 # React Native Mobile Chat App
 <img width="357" alt="Screenshot 2024-05-16 at 09 40 25" src="https://github.com/darunbjork/chat-app/assets/139690402/28f3a327-ed4b-4dc4-b82e-3824dcd1f93a">
 <img width="363" alt="Screenshot 2024-05-16 at 09 39 45" src="https://github.com/darunbjork/chat-app/assets/139690402/352a30f0-2a89-496b-a1f7-e1e908c8e199">
+![Simulator Screenshot - iPhone 15 - 2024-05-18 at 14 33 14](https://github.com/darunbjork/chat-app/assets/139690402/12d88066-8e0e-4d3f-81b9-c21a3b6cf4f3)
 
 ## Objective
 
