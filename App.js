@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Start from './components/Start';
 import Chat from './components/Chat';
@@ -35,12 +36,14 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Start">
-        <Stack.Screen name="Start" component={Start} />
-        <Stack.Screen name="Chat" options={({ route }) => ({ title: route.params.name })}>
-          {props => <Chat isConnected={connectionStatus.isConnected} db={db} storage={storage} {...props} />}
-        </Stack.Screen>
-      </Stack.Navigator>
+      <ActionSheetProvider>
+        <Stack.Navigator initialRouteName="Start">
+          <Stack.Screen name="Start" component={Start} />
+          <Stack.Screen name="Chat" options={({ route }) => ({ title: route.params.name })}>
+            {props => <Chat isConnected={connectionStatus.isConnected} db={db} storage={storage} {...props} />}
+          </Stack.Screen>
+        </Stack.Navigator>
+      </ActionSheetProvider>
     </NavigationContainer>
   );
 }
