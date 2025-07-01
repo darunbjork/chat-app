@@ -8,6 +8,11 @@ import * as Location from 'expo-location';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import MapView from 'react-native-maps';
+export const generateReference = (uri) => {
+  const timeStamp = new Date().getTime();
+  const imageName = uri.split("/").pop();
+  return `${timeStamp}-${imageName}`;
+};
 
 const Chat = ({ route, db, storage, isConnected }) => {
   const { name, color } = route.params;
@@ -190,11 +195,6 @@ const Chat = ({ route, db, storage, isConnected }) => {
     });
   };
 
-  const generateReference = (uri) => {
-    const timeStamp = (new Date()).getTime();
-    const imageName = uri.split("/").pop();
-    return `${timeStamp}-${imageName}`;
-  };
 
   const renderCustomActions = (props) => (
     <Actions
