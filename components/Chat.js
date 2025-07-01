@@ -25,7 +25,16 @@ const Chat = ({ route, db, storage, isConnected }) => {
   const loadCachedMessages = async () => {
     const cachedMessages = await AsyncStorage.getItem('messages');
     if (cachedMessages) {
-      setMessages(JSON.parse(cachedMessages));
+      try {
+        const parsedMessages = JSON.parse(cachedMessages);
+        const messagesWithDates = parsedMessages.map((msg) => ({
+          ...msg,
+          createdAt: msg.createdAt ? new Date(msg.createdAt) : new Date(),
+        }));
+        setMessages(messagesWithDates);
+      } catch (error) {
+        console.log('Failed to load cached messages:', error.message);
+      }
     }
   };
 
