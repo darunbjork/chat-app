@@ -38,27 +38,27 @@ Build a chat app for mobile devices using React Native, providing users with a c
 
 ## Installation
 
-1. **Clone the repository:**
+1. **Clone the repository**
    ```bash
    git clone https://github.com/yourusername/chat-app.git
    cd chat-app
+   ```
 
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-Install dependencies:
+3. **Set up Firebase**
+   - Create a new project in the Firebase Console.
+   - Enable Firestore Database and Cloud Storage.
+   - Replace the `firebaseConfig` in `App.js` with your project's configuration.
 
-bash
-Copy code
-npm install
-Set up Firebase:
+4. **Start the project**
+   ```bash
+   npx expo start
+   ```
 
-Create a new project in the Firebase Console.
-Enable Firestore Database and Cloud Storage.
-Replace the firebaseConfig in App.js with your Firebase project's configuration.
-Start the project:
-
-bash
-Copy code
-npx expo start
 Usage
 
 Open the app:
