@@ -8,6 +8,11 @@ import * as Location from 'expo-location';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import MapView from 'react-native-maps';
+export const generateReference = (uri) => {
+  const timeStamp = new Date().getTime();
+  const imageName = uri.split("/").pop();
+  return `${timeStamp}-${imageName}`;
+};
 
 const Chat = ({ route, db, storage, isConnected }) => {
   const { name, color } = route.params;
@@ -25,7 +30,16 @@ const Chat = ({ route, db, storage, isConnected }) => {
   const loadCachedMessages = async () => {
     const cachedMessages = await AsyncStorage.getItem('messages');
     if (cachedMessages) {
-      setMessages(JSON.parse(cachedMessages));
+      try {
+        const parsedMessages = JSON.parse(cachedMessages);
+        const messagesWithDates = parsedMessages.map((msg) => ({
+          ...msg,
+          createdAt: msg.createdAt ? new Date(msg.createdAt) : new Date(),
+        }));
+        setMessages(messagesWithDates);
+      } catch (error) {
+        console.log('Failed to load cached messages:', error.message);
+      }
     }
   };
 
@@ -190,11 +204,6 @@ const Chat = ({ route, db, storage, isConnected }) => {
     });
   };
 
-  const generateReference = (uri) => {
-    const timeStamp = (new Date()).getTime();
-    const imageName = uri.split("/").pop();
-    return `${timeStamp}-${imageName}`;
-  };
 
   const renderCustomActions = (props) => (
     <Actions
