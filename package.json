@@ -18,7 +18,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "braces": ">=3.0.3",
-    "expo": "~51.0.13",
+    "expo": "~55.0.9",
     "expo-image-picker": "~15.0.5",
     "expo-location": "~17.0.1",
     "expo-status-bar": "~1.12.1",
